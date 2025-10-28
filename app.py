@@ -5,6 +5,8 @@ import random
 from flask_cors import CORS
 from flask import Flask, jsonify, request, render_template
 
+running = True
+resetf = False
 
 app = Flask(__name__)
 
@@ -106,14 +108,47 @@ def set_params():
 
 @app.route('/coords')
 def coords():
+    global running, resetf
     dt = 0.02
-    pendulum.compute(dt)
+    if running:
+        pendulum.compute(dt)
+
+    if resetf:
+        pendulum.length_rod_1 = 1
+        pendulum.length_rod_2 = 1
+        pendulum.mass_bob_1 = 1
+        pendulum.mass_bob_2 = 1
+        pendulum.g = 9.81
+        pendulum.theta_1 = math.pi/2
+        pendulum.theta_2 = math.pi/2
+        pendulum.omega_1 = pendulum.omega_2 = 0
+        pendulum.update()
+        resetf = False
+
     return jsonify({
         'x1': pendulum.x1,
         'y1': pendulum.y1,
         'x2': pendulum.x2,
         'y2': pendulum.y2
     })
+
+@app.route('/pause', methods=['POST'])
+def pause():
+    global running
+    running = False
+    return jsonify({'status': 'paused'})
+
+@app.route('/resume', methods=['POST'])
+def resume():
+    global running
+    running = True
+    return jsonify({'status': 'resumed'})
+
+@app.route('/reset', methods=['POST'])
+def reset():
+    global resetf
+    resetf = True
+    return jsonify({'status': 'resetting'})
 
 
 if __name__ == '__main__':

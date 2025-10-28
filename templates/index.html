@@ -10,39 +10,58 @@
 <body>
     <h1>double pendulum
     </h1>
-    <div>
-        <canvas id="canvas" width="800" height="600" class="rounded-lg border border-gray-300"></canvas>
-    </div>
-    <div>
-        <h1>Controls</h1>
-        <label for="length_rod_1">Length of Rod 1:</label>
-        <input type="number" id="length_rod_1" value="1" step="0.1">
-        <br>
-        <label for="length_rod_2">Length of Rod 2:</label>          
-        <input type="number" id="length_rod_2" value="1" step="0.1">
-        <br>
-        <label for="mass_1">Mass 1:</label>
-        <input type="number" id="mass_1" value="1" step="0.1">  
-        <br>
-        <label for="mass_2">Mass 2:</label>
-        <input type="number" id="mass_2" value="1" step="0.1">
-        <br>
-        <label for="gravity">Gravity:</label>
-        <input type="number" id="gravity" value="9.81" step="0.1">
-        <br>
-        <label for="theta_1">Theta 1:</label>
-        <input type="number" id="theta_1" value="1" step="0.1">
-        <br>
-        <label for="theta_2">Theta 2:</label>
-        <input type="number" id="theta_2" value="1" step="0.1">
-        <br>
-        <button id="upt" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Update Parameters</button>
-    </div>
+    <div class="main flex flex-row gap-4">
 
-    <script>
+        <div>
+            <canvas id="canvas" width="800" height="600" class="rounded-lg border border-gray-300"></canvas>
+        </div>
+        <div>
+            <h1>Controls</h1>
+            <label for="length_rod_1">Length of Rod 1:</label>
+            <input type="number" id="length_rod_1" value="1" step="0.1">
+            <br>
+            <label for="length_rod_2">Length of Rod 2:</label>          
+            <input type="number" id="length_rod_2" value="1" step="0.1">
+            <br>
+            <label for="mass_1">Mass 1:</label>
+            <input type="number" id="mass_1" value="1" step="0.1">  
+            <br>
+            <label for="mass_2">Mass 2:</label>
+            <input type="number" id="mass_2" value="1" step="0.1">
+            <br>
+            <label for="gravity">Gravity:</label>
+            <input type="number" id="gravity" value="9.81" step="0.1">
+            <br>
+            <label for="theta_1">Theta 1:</label>
+            <input type="number" id="theta_1" value="1" step="0.1">
+            <br>
+            <label for="theta_2">Theta 2:</label>
+            <input type="number" id="theta_2" value="1" step="0.1">
+            <br>
+            <button id="upt" class="bg-blue-500 text-white px-4 py-2 rounded mt-2">Update Parameters</button>
+        </div>
+        <div>
+            <button id="reset" onclick="reset()" class="bg-red-500 text-white px-4 py-2 rounded mt-2">Reset</button>
+            <button id="start" onclick="start()" class="bg-green-500 text-white px-4 py-2 rounded mt-2">Start Simulation</button>
+            <button id="stop" onclick="stop()" class="bg-yellow-500 text-white px-4 py-2 rounded mt-2">Stop Simulation</button>
+        </div>
+        </div>
+        <script>
+            
 
-document.getElementById('upt').addEventListener('click', async () => {
-    const params = {
+async function reset() {
+    await fetch('/reset', { method: 'POST' });
+}
+async function start() {
+    await fetch('/resume', { method: 'POST' });
+}
+async function stop() {
+    await fetch('/pause', { method: 'POST' });
+}
+
+
+            document.getElementById('upt').addEventListener('click', async () => {
+                const params = {
         length_rod_1: parseFloat(document.getElementById('length_rod_1').value),
         length_rod_2: parseFloat(document.getElementById('length_rod_2').value),
         mass_1: parseFloat(document.getElementById('mass_1').value),    
