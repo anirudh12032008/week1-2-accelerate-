@@ -90,7 +90,18 @@ def set_params():
     pendulum.theta_2 = data.get('theta_2', pendulum.theta_2)
     pendulum.omega_1 = pendulum.omega_2 = 0
     pendulum.update()
-    return jsonify({'status': 'ok'})
+    return jsonify({
+        'status': 'OK',
+        'params': {
+            'length_rod_1': pendulum.length_rod_1,
+            'length_rod_2': pendulum.length_rod_2,
+            'mass_bob_1': pendulum.mass_bob_1,
+            'mass_bob_2': pendulum.mass_bob_2,
+            'g': pendulum.g,
+            'theta_1': pendulum.theta_1,
+            'theta_2': pendulum.theta_2
+        }
+    })
 
 
 @app.route('/coords')
