@@ -32,7 +32,7 @@ class Pendulum:
         self.y1 = self.origin_y + self.length_rod_1 * math.cos(self.theta_1)
         self.x2 = self.x1 + self.length_rod_2 * math.sin(self.theta_2)
         self.y2 = self.y1 + self.length_rod_2 * math.cos(self.theta_2)
-        print(f"b1: ({self.x1}, {self.y1}) | b2: ({self.x2}, {self.y2})")
+        # print(f"b1: ({self.x1}, {self.y1}) | b2: ({self.x2}, {self.y2})")
 
     def derivate(self, theta_1, theta_2, omega_1, omega_2):
         # im just going to derivate here but not actually implement the way to solve the differential equations I'll do that later so I just don't mess things up
@@ -77,6 +77,21 @@ pendulum = Pendulum()
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route('/update_params', methods=['POST'])
+def set_params():
+    data = request.json
+    pendulum.length_rod_1 = data.get('length_rod_1', pendulum.length_rod_1)
+    pendulum.length_rod_2 = data.get('length_rod_2', pendulum.length_rod_2)
+    pendulum.mass_bob_1 = data.get('mass_bob_1', pendulum.mass_bob_1)
+    pendulum.mass_bob_2 = data.get('mass_bob_2', pendulum.mass_bob_2)
+    pendulum.g = data.get('g', pendulum.g)
+    pendulum.theta_1 = data.get('theta_1', pendulum.theta_1)
+    pendulum.theta_2 = data.get('theta_2', pendulum.theta_2)
+    pendulum.omega_1 = pendulum.omega_2 = 0
+    pendulum.update()
+    return jsonify({'status': 'ok'})
+
 
 @app.route('/coords')
 def coords():
