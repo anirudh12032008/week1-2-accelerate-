@@ -39,6 +39,35 @@ class Pendulum:
         den1 = (m1 + m2) * l1 - m2 * l1 * math.cos(delta) * math.cos(delta) 
         den2 = (l2 / l1) * den1         
 
-    def step(self, dt):
-        # Update the angles and angular velocities using the physics of the double pendulum
-        pass
+        a1 = (m2 * l1 * omega_1 * omega_1 * math.sin(delta) * math.cos(delta) +
+              m2 * g * math.sin(theta_2) * math.cos(delta) +
+              m2 * l2 * omega_2 * omega_2 * math.sin(delta) -
+              (m1 + m2) * g * math.sin(theta_1)) / den1
+        a2 = (-m2 * l2 * omega_2 * omega_2 * math.sin(delta) * math.cos(delta) +
+              (m1 + m2) * g * math.sin(theta_1) * math.cos(delta) -
+              (m1 + m2) * l1 * omega_1 * omega_1    * math.sin(delta) -
+              (m1 + m2) * g * math.sin(theta_2)) / den2
+        return a1, a2
+    
+    def compute(self, dt=0.02):
+        # integrating right now Range's method but i can change it later from here
+        def k(s):
+            t1, w1, t2, w2 = s
+            a1, a2 = self.derivate(t1, t2, w1, w2)
+            return [w1, a1, w2, a2]
+        s = [self.theta_1, self.omega_1, self.theta_2, self.omega_2]
+        k1 = k(s)
+        k2 = k([s + 0.5 * dt * ki for s, ki in zip(s, k1)])
+        k3 = k([s + 0.5 * dt * ki for s, ki in zip(s, k2)])
+        k4 = k([s + dt * ki for s, ki in zip(s, k3)])
+
+        for i in range(4):
+            s[i] += (dt / 6.0) * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i])
+
+        self.theta_1, self.omega_1, self.theta_2, self.omega_2 = s
+        self.update()
+
+pendulum = Pendulum()
+
+
+
