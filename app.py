@@ -23,6 +23,8 @@ class Pendulum:
         self.theta_2 = theta_2
         self.omega_1 = omega_1
         self.omega_2 = omega_2
+        self.origin_x = origin_x
+        self.origin_y = origin_y
         self.update()
 
     def update(self):
@@ -70,4 +72,23 @@ class Pendulum:
 pendulum = Pendulum()
 
 
+# flasky things
+@app.route('/')
+def index():
+    return render_template('index.html')
 
+@app.route('/coords')
+def coords():
+    dt = 0.02
+    pendulum.compute(dt)
+    return jsonify({
+        'x1': pendulum.x1,
+        'y1': pendulum.y1,
+        'x2': pendulum.x2,
+        'y2': pendulum.y2
+    })
+
+
+if __name__ == '__main__':
+    CORS(app)
+    app.run(debug=True) 

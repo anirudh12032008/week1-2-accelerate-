@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+      <script src="https://cdn.tailwindcss.com"></script>
+
+</head>
+<body>
+    <h1>double pendulum
+    </h1>
+    <div>
+        <canvas id="canvas" width="800" height="600" class="rounded-lg border border-gray-300"></canvas>
+    </div>
+
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const origin = { x: canvas.width / 2, y: 200 };
+
+        async function update() {
+            const res = await fetch('/coords');
+            const data = await res.json();
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            const x1 = origin.x + data.x1 * 100;
+            const y1 = origin.y + data.y1 * 100;
+            const x2 = origin.x + data.x2 * 100;
+            const y2 = origin.y + data.y2 * 100;
+
+            ctx.beginPath();
+            ctx.moveTo(origin.x, origin.y);
+            ctx.lineTo(x1, y1);
+            ctx.lineTo(x2, y2);
+            ctx.stroke();
+
+            ctx.beginPath();
+            ctx.arc(x1, y1, 10, 0, Math.PI * 2);
+            ctx.arc(x2, y2, 10, 0, Math.PI * 2);
+            ctx.fill();
+            requestAnimationFrame(update);
+        }
+        update();
+    </script>
+</body>
+</html>
