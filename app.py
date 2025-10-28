@@ -9,9 +9,9 @@ from flask import Flask, jsonify, request, render_template
 app = Flask(__name__)
 
 class Pendulum:
-    def __init__(self, origin_x=300, origin_y=100,
-                 length_rod_1=120, length_rod_2=120,
-                 mass_bob_1=10, mass_bob_2=10, g=9.81,
+    def __init__(self, origin_x=0, origin_y=0,
+                 length_rod_1=1, length_rod_2=1,
+                 mass_bob_1=1, mass_bob_2=1, g=9.81,
                  theta_1=math.pi/2, theta_2=math.pi/2,
                  omega_1=0.0, omega_2=0.0):
         self.length_rod_1 = length_rod_1
@@ -32,6 +32,7 @@ class Pendulum:
         self.y1 = self.origin_y + self.length_rod_1 * math.cos(self.theta_1)
         self.x2 = self.x1 + self.length_rod_2 * math.sin(self.theta_2)
         self.y2 = self.y1 + self.length_rod_2 * math.cos(self.theta_2)
+        print(f"b1: ({self.x1}, {self.y1}) | b2: ({self.x2}, {self.y2})")
 
     def derivate(self, theta_1, theta_2, omega_1, omega_2):
         # im just going to derivate here but not actually implement the way to solve the differential equations I'll do that later so I just don't mess things up
@@ -59,9 +60,9 @@ class Pendulum:
             return [w1, a1, w2, a2]
         s = [self.theta_1, self.omega_1, self.theta_2, self.omega_2]
         k1 = k(s)
-        k2 = k([s + 0.5 * dt * ki for s, ki in zip(s, k1)])
-        k3 = k([s + 0.5 * dt * ki for s, ki in zip(s, k2)])
-        k4 = k([s + dt * ki for s, ki in zip(s, k3)])
+        k2 = k([v + 0.5 * dt * ki for v, ki in zip(s, k1)])
+        k3 = k([v + 0.5 * dt * ki for v, ki in zip(s, k2)])
+        k4 = k([v + dt * ki for v, ki in zip(s, k3)])
 
         for i in range(4):
             s[i] += (dt / 6.0) * (k1[i] + 2 * k2[i] + 2 * k3[i] + k4[i])
