@@ -1,5 +1,16 @@
         
 
+let bgc = "#ffffff"
+let threadc = "#000000"
+let ball1c = "#ff0000"
+let ball2c = "#0000ff"
+let trailc = 0.1;
+// let trailc = 0.1;
+
+
+
+
+
 async function reset() {
     await fetch('/reset', { method: 'POST' });
 }
@@ -116,7 +127,14 @@ const velocityChart = new Chart(velocityc, {
         },
     },
 });
-
+// AI used for this func to get good trails
+function hexToRGBA(hex, alpha) {
+    const bigint = parseInt(hex.slice(1), 16);
+    const r = (bigint >> 16) & 255;
+    const g = (bigint >> 8) & 255;
+    const b = bigint & 255;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+}
 // logic for charts ( trying to keep this front end only :prayge: )
 let t = 0;
 let frameCount = 0;
@@ -129,7 +147,11 @@ let frameCount = 0;
             const res = await fetch('/coords');
             const data = await res.json();
             // ctx.clearRect(0, 0, canvas.width, canvas.height);
-ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+// ctx.fillStyle = "rgba(255, 255, 255, 0.1)";
+ctx.fillStyle = hexToRGBA(bgc, trailc);
+
+
+
 ctx.fillRect(0, 0, canvas.width, canvas.height);
 // ctx.strokeStyle = 'white';
             const x1 = origin.x + data.x1 * 100;
@@ -141,16 +163,18 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.moveTo(origin.x, origin.y);
             ctx.lineTo(x1, y1);
             ctx.lineTo(x2, y2);
+            ctx.strokeStyle = threadc;
+            ctx.lineWidth = 2;
             ctx.stroke();
 
             ctx.beginPath();
-            ctx.fillStyle = 'red';
+            ctx.fillStyle = ball1c;
             ctx.arc(x1, y1, 10, 0, Math.PI * 2);
             ctx.fill();
             
 
             ctx.beginPath();
-            ctx.fillStyle = 'blue';
+            ctx.fillStyle = ball2c;
 
             ctx.arc(x2, y2, 10, 0, Math.PI * 2);
             ctx.fill();
