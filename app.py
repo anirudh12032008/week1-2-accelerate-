@@ -129,7 +129,12 @@ def coords():
         'x1': pendulum.x1,
         'y1': pendulum.y1,
         'x2': pendulum.x2,
-        'y2': pendulum.y2
+        'y2': pendulum.y2,
+        'theta_1': pendulum.theta_1,
+        'theta_2': pendulum.theta_2,
+        'omega_1': pendulum.omega_1,
+        'omega_2': pendulum.omega_2
+
     })
 
 @app.route('/pause', methods=['POST'])
