@@ -53,6 +53,10 @@ const angle1D = [];
 const angle2D = [];
 const velocity1D = [];
 const velocity2D = [];
+const kineticD = [];
+const potentialD = [];
+const totalD = [];
+
 
 const angleChart = new Chart(anglec, {
     type: 'line',
@@ -127,6 +131,57 @@ const velocityChart = new Chart(velocityc, {
         },
     },
 });
+
+
+const energyChart = new Chart(document.getElementById('energy').getContext('2d'), {
+  type: 'line',
+  data: {
+    labels: [],
+    datasets: [
+      {
+        label: 'Kinetic Energy (Total)',
+        data: [],
+        borderColor: 'rgb(34,197,94)', 
+        borderWidth: 2,
+        fill: false,
+        tension: 0.15
+      },
+      {
+        label: 'Potential Energy (Total)',
+        data: [],
+        borderColor: 'rgb(59,130,246)', 
+        borderWidth: 2,
+        fill: false,
+        tension: 0.15
+      },
+      {
+        label: 'Total Energy',
+        data: [],
+        borderColor: 'rgb(244,63,94)', 
+        borderWidth: 2,
+        borderDash: [5, 5],
+        fill: false,
+        tension: 0.15
+      }
+    ]
+  },
+  options: {
+    animation: { duration: 0 },
+    responsive: true,
+    elements: { point: { radius: 0 } },
+    scales: {
+      x: { display: false },
+      y: {
+        beginAtZero: false,
+        ticks: { color: '#333' },
+        grid: { color: 'rgba(0,0,0,0.1)' }
+      }
+    },
+    plugins: {
+      legend: { labels: { color: '#333' } }
+    }
+  }
+});
 // AI used for this func to get good trails
 function hexToRGBA(hex, alpha) {
     const bigint = parseInt(hex.slice(1), 16);
@@ -190,15 +245,28 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
                 angle2D.push(data.theta_2)
                 velocity1D.push(data.omega_1)
                 velocity2D.push(data.omega_2)
+                kineticD.push(data.kinetic)
+                potentialD.push(data.potential)
+                totalD.push(data.energy)
                 if (timeD.length>100){
                 timeD.shift()
                 angle1D.shift()
                 angle2D.shift()
                 velocity1D.shift()
                 velocity2D.shift()
+                kineticD.shift()
+                potentialD.shift()
+                totalD.shift()
                 }
                 angleChart.update('none')
                 velocityChart.update('none')
+                energyChart.data.labels = timeD;
+                energyChart.data.datasets[0].data = kineticD;
+                energyChart.data.datasets[1].data = potentialD;
+                energyChart.data.datasets[2].data = totalD;
+
+                energyChart.update('none')
+
             }
 
             requestAnimationFrame(update);

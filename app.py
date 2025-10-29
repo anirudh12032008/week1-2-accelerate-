@@ -133,7 +133,23 @@ def coords():
         'theta_1': pendulum.theta_1,
         'theta_2': pendulum.theta_2,
         'omega_1': pendulum.omega_1,
-        'omega_2': pendulum.omega_2
+        'omega_2': pendulum.omega_2,
+        'kinetic': 0.5 * pendulum.mass_bob_1 * (pendulum.length_rod_1 * pendulum.omega_1) ** 2 +
+                     0.5 * pendulum.mass_bob_2 * ((pendulum.length_rod_1 * pendulum.omega_1) ** 2 +
+                                                     (pendulum.length_rod_2 * pendulum.omega_2) ** 2 +
+                                                     2 * pendulum.length_rod_1 * pendulum.length_rod_2 * pendulum.omega_1 * pendulum.omega_2 *
+                                                     math.cos(pendulum.theta_1 - pendulum.theta_2)),    
+        'potential': (pendulum.mass_bob_1 * pendulum.g * (pendulum.length_rod_1 * (1 - math.cos(pendulum.theta_1))) +
+                      pendulum.mass_bob_2 * pendulum.g * (pendulum.length_rod_1 * (1 - math.cos(pendulum.theta_1)) +
+                                                          pendulum.length_rod_2 * (1 - math.cos(pendulum.theta_2)))),
+        # total energy
+        'energy': ( 0.5 * pendulum.mass_bob_1 * (pendulum.length_rod_1 * pendulum.omega_1) ** 2 +
+                     0.5 * pendulum.mass_bob_2 * ((pendulum.length_rod_1 * pendulum.omega_1) ** 2 +
+                                                     (pendulum.length_rod_2 * pendulum.omega_2) ** 2 +
+                                                     2 * pendulum.length_rod_1 * pendulum.length_rod_2 * pendulum.omega_1 * pendulum.omega_2 *
+                                                     math.cos(pendulum.theta_1 - pendulum.theta_2)) + (pendulum.mass_bob_1 * pendulum.g * (pendulum.length_rod_1 * (1 - math.cos(pendulum.theta_1))) +
+                      pendulum.mass_bob_2 * pendulum.g * (pendulum.length_rod_1 * (1 - math.cos(pendulum.theta_1)) +
+                                                          pendulum.length_rod_2 * (1 - math.cos(pendulum.theta_2)))) )
 
     })
 

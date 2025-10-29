@@ -80,8 +80,12 @@
                 </div>
                 
                 <div id="graphs-tab" class="tab-pane hidden">
-                    <h2 class="text-xl font-bold mb-4">Real-time Graphs</h2>
-                    <div class="space-y-4">
+                    <h2 class="text-xl flex font-bold mb-4">Real-time Graphs</h2>
+                    <div class="space-y-2">
+                        <div>
+  <h3 class="text-lg font-medium mb-2">Energy vs Time</h3>
+  <canvas id="energy" width="350" height="200" class="border rounded"></canvas>
+</div>
                         <div>
                             <h3 class="text-lg font-medium mb-2">Angle vs Time</h3>
                             <canvas id="angle" width="350" height="200" class="border rounded"></canvas>
@@ -90,6 +94,8 @@
                             <h3 class="text-lg font-medium mb-2">Angular Velocity vs Time</h3>
                             <canvas id="velocity" width="350" height="200" class="border rounded"></canvas>
                         </div>
+                        
+
                     </div>
                 </div>
                 <div id="customize-tab" class="tab-pane hidden">
