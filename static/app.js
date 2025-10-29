@@ -176,7 +176,7 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
             velocityChart.update('none')
 
 
-            await new Promise(r => setTimeout(r, 50));
+            await new Promise(r => setTimeout(r, 100));
             requestAnimationFrame(update);
         }
         update();

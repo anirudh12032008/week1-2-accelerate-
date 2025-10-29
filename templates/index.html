@@ -13,23 +13,18 @@
     <h1>double pendulum
     </h1>
     <div class="main flex flex-row gap-4">
-        <!-- Left side - Canvas -->
         <div>
             <canvas id="canvas" width="800" height="600" class="rounded-lg border border-gray-300"></canvas>
         </div>
         
-        <!-- Right side - Tabbed interface -->
         <div class="w-96">
-            <!-- Tab buttons -->
             <div class="flex border-b">
                 <button class="tab-btn px-4 py-2 border-b-2 border-blue-500 text-blue-500 font-medium" data-tab="controls">Controls</button>
                 <button class="tab-btn px-4 py-2 text-gray-500 hover:text-blue-500" data-tab="simulation">Simulation</button>
                 <button class="tab-btn px-4 py-2 text-gray-500 hover:text-blue-500" data-tab="graphs">Graphs</button>
             </div>
             
-            <!-- Tab content -->
             <div class="tab-content mt-4">
-                <!-- Controls tab -->
                 <div id="controls-tab" class="tab-pane">
                     <h2 class="text-xl font-bold mb-4">Parameters</h2>
                     <div class="space-y-3">
@@ -65,7 +60,6 @@
                     </div>
                 </div>
                 
-                <!-- Simulation tab -->
                 <div id="simulation-tab" class="tab-pane hidden">
                     <h2 class="text-xl font-bold mb-4">Simulation Controls</h2>
                     <div class="space-y-3">
@@ -75,7 +69,6 @@
                     </div>
                 </div>
                 
-                <!-- Graphs tab -->
                 <div id="graphs-tab" class="tab-pane hidden">
                     <h2 class="text-xl font-bold mb-4">Real-time Graphs</h2>
                     <div class="space-y-4">
@@ -95,7 +88,9 @@
        <script src="/static/app.js"></script>
        
        <script>
-        // Tab functionality
+
+        // shitty frontend --> good frontend
+        // keeping this here cause the app.js will have only good things not ts :loll:
         document.addEventListener('DOMContentLoaded', function() {
             const tabButtons = document.querySelectorAll('.tab-btn');
             const tabPanes = document.querySelectorAll('.tab-pane');
@@ -104,22 +99,18 @@
                 button.addEventListener('click', function() {
                     const targetTab = this.getAttribute('data-tab');
                     
-                    // Remove active class from all buttons
                     tabButtons.forEach(btn => {
                         btn.classList.remove('border-blue-500', 'text-blue-500', 'font-medium');
                         btn.classList.add('text-gray-500');
                     });
                     
-                    // Add active class to clicked button
                     this.classList.add('border-blue-500', 'text-blue-500', 'font-medium');
                     this.classList.remove('text-gray-500');
                     
-                    // Hide all tab panes
                     tabPanes.forEach(pane => {
                         pane.classList.add('hidden');
                     });
                     
-                    // Show target tab pane
                     document.getElementById(targetTab + '-tab').classList.remove('hidden');
                 });
             });
