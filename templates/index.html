@@ -93,6 +93,38 @@
         </div>
     </div>
        <script src="/static/app.js"></script>
+       
+       <script>
+        // Tab functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            const tabPanes = document.querySelectorAll('.tab-pane');
+            
+            tabButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const targetTab = this.getAttribute('data-tab');
+                    
+                    // Remove active class from all buttons
+                    tabButtons.forEach(btn => {
+                        btn.classList.remove('border-blue-500', 'text-blue-500', 'font-medium');
+                        btn.classList.add('text-gray-500');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('border-blue-500', 'text-blue-500', 'font-medium');
+                    this.classList.remove('text-gray-500');
+                    
+                    // Hide all tab panes
+                    tabPanes.forEach(pane => {
+                        pane.classList.add('hidden');
+                    });
+                    
+                    // Show target tab pane
+                    document.getElementById(targetTab + '-tab').classList.remove('hidden');
+                });
+            });
+        });
+       </script>
 
 </body>
 </html>
