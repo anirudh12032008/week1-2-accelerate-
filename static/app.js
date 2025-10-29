@@ -119,10 +119,7 @@ const velocityChart = new Chart(velocityc, {
 
 // logic for charts ( trying to keep this front end only :prayge: )
 let t = 0;
-// async function update(){
-
-// }
-
+let frameCount = 0;
 
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
@@ -157,26 +154,29 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             ctx.arc(x2, y2, 10, 0, Math.PI * 2);
             ctx.fill();
-            // charts
-            // t += 0.02 ( this is looking too wierd)
-            t = parseFloat((t+0.02).toFixed(2))
-            timeD.push(t)
-            angle1D.push(data.theta_1)
-            angle2D.push(data.theta_2)
-            velocity1D.push(data.omega_1)
-            velocity2D.push(data.omega_2)
-            if (timeD.length>100){
-            timeD.shift()
-            angle1D.shift()
-            angle2D.shift()
-            velocity1D.shift()
-            velocity2D.shift()
+            
+            // Update charts only every 3 frames to improve performance
+            frameCount++;
+            if (frameCount % 3 === 0) {
+                // charts
+                // t += 0.02 ( this is looking too wierd)
+                t = parseFloat((t+0.02).toFixed(2))
+                timeD.push(t)
+                angle1D.push(data.theta_1)
+                angle2D.push(data.theta_2)
+                velocity1D.push(data.omega_1)
+                velocity2D.push(data.omega_2)
+                if (timeD.length>100){
+                timeD.shift()
+                angle1D.shift()
+                angle2D.shift()
+                velocity1D.shift()
+                velocity2D.shift()
+                }
+                angleChart.update('none')
+                velocityChart.update('none')
             }
-            angleChart.update('none')
-            velocityChart.update('none')
 
-
-            await new Promise(r => setTimeout(r, 100));
             requestAnimationFrame(update);
         }
         update();
