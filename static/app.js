@@ -17,8 +17,8 @@ async function stop() {
                 const params = {
         length_rod_1: parseFloat(document.getElementById('length_rod_1').value),
         length_rod_2: parseFloat(document.getElementById('length_rod_2').value),
-        mass_1: parseFloat(document.getElementById('mass_1').value),    
-        mass_2: parseFloat(document.getElementById('mass_2').value),
+        mass_bob_1: parseFloat(document.getElementById('mass_1').value),    
+        mass_bob_2: parseFloat(document.getElementById('mass_2').value),
         gravity: parseFloat(document.getElementById('gravity').value),
         theta_1: parseFloat(document.getElementById('theta_1').value),
         theta_2: parseFloat(document.getElementById('theta_2').value)
@@ -158,7 +158,8 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
             ctx.arc(x2, y2, 10, 0, Math.PI * 2);
             ctx.fill();
             // charts
-            t += 0.02
+            // t += 0.02 ( this is looking too wierd)
+            t = parseFloat((t+0.02).toFixed(2))
             timeD.push(t)
             angle1D.push(data.theta_1)
             angle2D.push(data.theta_2)
@@ -171,11 +172,11 @@ ctx.fillRect(0, 0, canvas.width, canvas.height);
             velocity1D.shift()
             velocity2D.shift()
             }
-            angleChart.update()
-            velocityChart.update()
+            angleChart.update('none')
+            velocityChart.update('none')
 
 
-
+            await new Promise(r => setTimeout(r, 50));
             requestAnimationFrame(update);
         }
         update();
